@@ -1,0 +1,5 @@
+data/dev.csv
+data/test.csv
+data/test/*.wav
+data/train.csv
+data/train/*.wav
