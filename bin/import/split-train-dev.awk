@@ -4,9 +4,9 @@
         print > "data/train.csv";
     }
     else if (NR % 20 == 2) {
-        print > "dev.csv";
+        print > "data/dev.csv";
     }
     else {
-        print > "train.csv";
+        print > "data/train.csv";
     }
 }

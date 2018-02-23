@@ -9,17 +9,18 @@ use NormalizeSent qw(normalize);
 my $IN_AUDIO_FORMAT = 'flac';
 my $OUT_AUDIO_FORMAT = 'wav';
 
-if (@ARGV != 4) {
-    die "USAGE: $0 in_audio_dir out_audio_dir train_out_csv_fn test_out_csv_fn\n";
+if (@ARGV != 5) {
+    die "USAGE: $0 in_audio_dir out_audio_dir train_out_csv_fn test_out_csv_fn corpus_fn\n";
 }
-my ($in_audio_dir, $out_audio_dir, $train_out_csv_fn, $test_out_csv_fn) = @ARGV;
+my ($in_audio_dir, $out_audio_dir, $train_out_csv_fn, $test_out_csv_fn, $out_corpus_fn) = @ARGV;
 
 my %is_test = map {;$_=>1} split /:/, $ENV{MAKONFM_TEST_TRACKS};
 my $test_start = $ENV{MAKONFM_TEST_START_POS} || 0;
 my $test_end   = $ENV{MAKONFM_TEST_END_POS}   || 'Infinity';
 
-open my $train_csv_fh, '>:utf8', $train_out_csv_fn or die "Couldn't open '$train_out_csv_fn': $!";
-open my $test_csv_fh,  '>:utf8', $test_out_csv_fn  or die "Couldn't open '$test_out_csv_fn': $!";
+open my $train_csv_fh, '>:utf8', $train_out_csv_fn or die "Couldn't open train.csv '$train_out_csv_fn': $!";
+open my $test_csv_fh,  '>:utf8', $test_out_csv_fn  or die "Couldn't open test.csv '$test_out_csv_fn': $!";
+open my $corpus_fh,    '>:utf8', $out_corpus_fn    or die "Couldn't open corpus '$out_corpus_fn': $!";
 
 my $log_fh;
 if ($ENV{SUB_EXTRACTION_LOG}) {
@@ -61,6 +62,7 @@ while (<STDIN>) {
     my $normalized_sent = normalize($sent);
     1 while chomp $sent;
     print {$csv_fh} qq($out_audio_fn,$sent,0,0,,male,,\n);
+    print {$corpus_fh} "$sent\n";
 }
 
 sub cmd {
