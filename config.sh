@@ -6,6 +6,7 @@ export MAKONFM_TEST_START_POS=60    # take testing data from 1 minute into the t
 export MAKONFM_TEST_END_POS=660     # up to minute 11 (10 minutes total per track)
 export MAKONFM_SUB_DIR='TODO /path/to/subs'
 export AUDIO_DIR='TODO /path/to/flac'
+export DSH='TODO /path/to/DeepSpeech'
 export ALPHABET_FN='res/alphabet.txt'
 export PERL5LIB="$PERL5LIB:./lib"
 
