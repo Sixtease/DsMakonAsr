@@ -14,4 +14,6 @@ if [ -r config_local.sh ]; then
     . config_local.sh
 fi
 
+export DECODER_LIB="${NATIVE_CLIENT_DIR:-$DSH/libctc_decoder_with_kenlm.so}"
+
 export SUBS_MASK="$MAKONFM_SUB_DIR/*.sub.js"
