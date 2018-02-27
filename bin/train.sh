@@ -6,7 +6,7 @@ cd "$DSH"
 
 . bin/activate
 
-DeepSpeech.py \
+./DeepSpeech.py \
     --alphabet_config_path "$ASRH/res/alphabet.txt"\
     --checkpoint_dir "$ASRH/temp/checkpoints" \
     --checkpoint_secs 900 \
@@ -17,7 +17,7 @@ DeepSpeech.py \
     --export_dir "$ASRH/model"\
     --lm_binary_path "$ASRH/data/lm/lm.binary"\
     --lm_trie_path "$ASRH/data/lm/trie" \
-    --wer_log_pattern "GLOBAL LOG: logwer(%%s, %%s, %%f)"
+    --wer_log_pattern "GLOBAL LOG: logwer(%%s, %%s, %%f)" \
     --max_to_keep 3 \
     --summary_dir "$ASRH/temp/summaries" \
     --summary_secs 900 \
