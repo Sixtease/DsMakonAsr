@@ -27,7 +27,7 @@ if ($ENV{SUB_EXTRACTION_LOG}) {
     open $log_fh, '>', $ENV{SUB_EXTRACTION_LOG};
 }
 
-my $headline = "filename,text,up_votes,down_votes,age,gender,accent,duration\n";
+my $headline = "wav_filename,wav_filesize,transcript\n";
 print {$train_csv_fh} $headline;
 print {$test_csv_fh}  $headline;
 
@@ -47,21 +47,22 @@ while (<STDIN>) {
         $csv_fh = $test_csv_fh;
         $is_test_sent = 1;
     }
-    
+
     my $kind = $is_test_sent ? 'test' : 'train';
     print {$log_fh} "$filestem $start .. $end => $sid ($kind)\n" if $log_fh;
-    print("$in_audio_fn not found\n"), next if not -e $in_audio_fn;
 
     my $out_audio_fn = "$out_audio_dir/$kind/$sid.$OUT_AUDIO_FORMAT";
-    
-    my ($cmd, $error);
-    
+
+    print("$in_audio_fn not found\n"), next if not -e $in_audio_fn;
+    my $cmd;
     cmd(qq(sox "$in_audio_fn" "$out_audio_fn" trim "$start" "=$end"))
         or next LINE;
-    
+
+    my $filesize = (stat($out_audio_fn))[7];
+
     my $normalized_sent = normalize($sent);
     1 while chomp $sent;
-    print {$csv_fh} qq($out_audio_fn,$sent,0,0,,male,,\n);
+    print {$csv_fh} qq($out_audio_fn,$filesize,$sent\n);
     print {$corpus_fh} "$sent\n";
 }
 
