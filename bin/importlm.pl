@@ -16,14 +16,15 @@ open my $wide_out_vocab_fh, '>:utf8', $wide_out_vocab_fn or die "Couldn't open w
 while (<$in_lm_fh>) {
     my $normalized = lc;
     $normalized =~ s/!!unk/<unk>/g;
-    asciize($normalized);
-    print $normalized;
+    my $ascii = $normalized;
+    asciize($ascii);
+    print $ascii;
     if (/\\1-grams:/ .. /^$/) {
-        if (/^\S+\s+(\S+)/) {
-            my $lc = lc($1);
-            print {$wide_out_vocab_fh} "$lc\n";
-            asciize($lc);
-            print {$out_vocab_fh} "$lc\n";
+        if ($normalized =~ /^\S+\s+(\S+)/) {
+            my $match = $1;
+            print {$wide_out_vocab_fh} "$match\n";
+            asciize($match);
+            print {$out_vocab_fh} "$match\n";
         }
     }
 }

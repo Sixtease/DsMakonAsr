@@ -1,5 +1,11 @@
+config_local.sh
 data/flac/*.flac
 data/*.txt
 data/*.csv
 data/*/*.wav
-config_local.sh
+data/lm/lm.arpa
+data/lm/lm.binary
+data/lm/trie
+data/lm/wide-lm.arpa
+data/lm/wide-wordlist
+data/lm/wordlist
