@@ -10,7 +10,7 @@ our @EXPORT_OK = qw(load_alphabet normalize);
 
 sub load_alphabet {
     my $alphabet = do {{
-        open my $alphabet_fh, '<:utf8', $ENV{ALPHABET_FN} or die "could not open alphabet file $ENV{ALPHABET_FN}: $!";
+        open my $alphabet_fh, '<:utf8', $ENV{WIDE_ALPHABET_FN} or die "could not open alphabet file $ENV{WIDE_ALPHABET_FN}: $!";
         my @chars = <$alphabet_fh>;
         chomp for @chars;
         join('', @chars);

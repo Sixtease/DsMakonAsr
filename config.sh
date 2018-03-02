@@ -8,6 +8,7 @@ export MAKONFM_SUB_DIR='TODO /path/to/subs'
 export AUDIO_DIR='TODO /path/to/flac'
 export DSH='TODO /path/to/DeepSpeech'
 export ALPHABET_FN='res/alphabet.txt'
+export WIDE_ALPHABET_FN='res/wide-alphabet.txt'
 export PERL5LIB="$PERL5LIB:./lib"
 
 if [ -r config_local.sh ]; then
