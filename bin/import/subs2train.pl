@@ -55,14 +55,14 @@ while (<STDIN>) {
 
     print("$in_audio_fn not found\n"), next if not -e $in_audio_fn;
     my $cmd;
-    cmd(qq(sox "$in_audio_fn" "$out_audio_fn" trim "$start" "=$end"))
-        or next LINE;
+#    cmd(qq(sox "$in_audio_fn" "$out_audio_fn" trim "$start" "=$end" remix - rate 16k))
+#        or next LINE;
 
     my $filesize = (stat($out_audio_fn))[7];
 
     my $normalized_sent = normalize($sent);
-    1 while chomp $sent;
-    print {$csv_fh} qq($out_audio_fn,$filesize,$sent\n);
+    1 while chomp $normalized_sent;
+    print {$csv_fh} qq($out_audio_fn,$filesize,$normalized_sent\n);
     print {$corpus_fh} "$sent\n";
 }
 
