@@ -15,7 +15,7 @@ cd "$DSH"
     --dev_files "$ASRH/data/dev.csv" \
     --display_step 5 \
     --export_dir "$ASRH/model" \
-    --fulltrace true
+    --fulltrace true \
     --lm_binary_path "$ASRH/data/lm/lm.binary" \
     --lm_trie_path "$ASRH/data/lm/trie" \
     --max_to_keep 3 \
