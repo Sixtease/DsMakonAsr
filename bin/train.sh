@@ -4,7 +4,7 @@
 
 cd "$DSH"
 
-. bin/activate
+# do not forget to . bin/activate virtualenv
 
 ./DeepSpeech.py \
     --alphabet_config_path "$ASRH/res/alphabet.txt" \
