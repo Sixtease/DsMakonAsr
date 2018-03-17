@@ -13,6 +13,8 @@ open my $in_lm_fh, '<:encoding(iso-8859-2)', $in_lm_fn or die "Couldn't open lan
 open my $out_vocab_fh, '>:utf8', $out_vocab_fn or die "Couldn't open output vocabulary file '$out_vocab_fn': $!";
 open my $wide_out_vocab_fh, '>:utf8', $wide_out_vocab_fn or die "Couldn't open wide output vocabulary file '$wide_out_vocab_fn': $!";
 
+my %vocab;
+
 while (<$in_lm_fh>) {
     my $normalized = lc;
     $normalized =~ s/!!unk/<unk>/g;
@@ -22,6 +24,8 @@ while (<$in_lm_fh>) {
     if (/\\1-grams:/ .. /^$/) {
         if ($normalized =~ /^\S+\s+(\S+)/) {
             my $match = $1;
+            next if /</;    # skip <unk> <s> and </s> from wordlist
+            next if $vocab{$match}++;
             print {$wide_out_vocab_fh} "$match\n";
             asciize($match);
             print {$out_vocab_fh} "$match\n";
