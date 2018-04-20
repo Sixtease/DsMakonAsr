@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(asciize);
+our @EXPORT_OK = qw(asciize deasciize);
 
 our %map = (
     'á' => 'a',
@@ -24,8 +24,30 @@ our %map = (
     'ž' => 'z',
 );
 
+our %rmap = (
+    'a' => 'á',
+    'e' => 'é',
+    'i' => 'í',
+    'o' => 'ó',
+    'u' => 'ú',
+    'y' => 'ý',
+    'c' => 'č',
+    'd' => 'ď',
+    'j' => 'ě',
+    'n' => 'ň',
+    'r' => 'ř',
+    's' => 'š',
+    't' => 'ť',
+    'w' => 'ů',
+    'z' => 'ž',
+);
+
 sub asciize {
     s/([áéíóúýčďěňřšťůž])/'$map{$1}/g for @_;
+}
+
+sub deasciize {
+    s/'([aeiouycdjnrstwz])/$rmap{$1}/g for @_;
 }
 
 1;
