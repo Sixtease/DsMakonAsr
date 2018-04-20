@@ -26,5 +26,4 @@ cd "$DSH"
     --train_batch_size 80 \
     --train_files "$ASRH/data/train.csv" \
     --validation_step 5 \
-    --wer_log_pattern "GLOBAL LOG: logwer(%%s, %%s, %%f)" \
     "$@"
