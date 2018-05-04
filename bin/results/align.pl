@@ -23,8 +23,10 @@ my $mfcc_header = mfcc_header($mfcc_fn);
 
 my $trans_fn = "$dsasrdir/data/recout/utf8/$stem.txt";
 
-my $db = MakonFM::Model::DB->new;
-MakonFM::Util::Vyslov::set_dict($db->resultset('Dict'));
+eval {
+    my $db = MakonFM::Model::DB->new;
+    MakonFM::Util::Vyslov::set_dict($db->resultset('Dict'));
+};
 
 my $matched = MakonFM::Util::MatchChunk::get_subs(
     $trans_fn, $mfcc_fn, 0, $mfcc_header->{length},
