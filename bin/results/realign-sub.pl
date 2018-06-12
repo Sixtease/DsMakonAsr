@@ -45,8 +45,8 @@ eval {
 my $buf_start = 0;
 my @wbuf;
 my @sbuf;
-for my $word (@{ $subs->{data} }, {timestamp => 'Infinity'}) {
-    if ($word->{timestamp} - $buf_start > $CHUNK_SIZE) {
+for my $word (@{ $subs->{data} }, {timestamp => $mfcc_header->{length}, is_padding => 1}) {
+    if ($word->{timestamp} - $buf_start > $CHUNK_SIZE or $word->{is_padding}) {
         my $trans = join(' ', map $_->{occurrence}, @wbuf);
         my $trans_octets = encode_utf8($trans);
 
@@ -67,6 +67,5 @@ for my $word (@{ $subs->{data} }, {timestamp => 'Infinity'}) {
     }
     push @wbuf, $word;
 }
-pop @wbuf;  # remove padding {timestamp=>inf}
 
-print encode_subs(\@wbuf, $subs->{filestem});
+print encode_subs(\@sbuf, $subs->{filestem});
