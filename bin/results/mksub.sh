@@ -3,7 +3,9 @@
 stem="$1"
 PW="$PWD"
 
-bin/deasciize.pl < "data/recout/ascii/$stem.txt" > "data/recout/utf8/$stem.txt"
+if [ -e "data/recout/utf8/$stem.txt" ]; then : ; else
+    bin/deasciize.pl < "data/recout/ascii/$stem.txt" > "data/recout/utf8/$stem.txt"
+fi
 
 cd "$MAKON_FM_DIR"
 
