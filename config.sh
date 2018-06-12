@@ -10,6 +10,7 @@ export DSH='TODO /path/to/DeepSpeech'
 export ALPHABET_FN='res/alphabet.txt'
 export WIDE_ALPHABET_FN='res/wide-alphabet.txt'
 export PERL5LIB="$PERL5LIB:./lib"
+export SPLITDIR='temp/splits'
 
 if [ -r config_local.sh ]; then
     . config_local.sh
