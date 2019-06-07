@@ -20,8 +20,9 @@ use MakonFM::Model::DB;
 use MakonFM::Util::MatchChunk;
 use Subs qw(decode_subs encode_subs);
 
-my $MINUTE = 60;
-my $CHUNK_SIZE = 1 * $MINUTE;
+my $SECOND = 1;
+my $MINUTE = 60 * $SECOND;
+my $CHUNK_SIZE = 5 * $SECOND;
 
 my $dsasrdir = (sub { dirname((caller)[1]) }->()) . '/../..';
 
@@ -45,7 +46,12 @@ eval {
 my $buf_start = 0;
 my @wbuf;
 my @sbuf;
+my $last_timestamp = 0;
 for my $word (@{ $subs->{data} }, {timestamp => $mfcc_header->{length}, is_padding => 1}) {
+    if ($word->{timestamp} < $last_timestamp) {
+        die "decreasing timestamp, quitting $stem";
+    }
+    $last_timestamp = $word->{timestamp};
     if ($word->{timestamp} - $buf_start > $CHUNK_SIZE or $word->{is_padding}) {
         my $trans = join(' ', map $_->{occurrence}, @wbuf);
         my $trans_octets = encode_utf8($trans);
@@ -57,7 +63,7 @@ for my $word (@{ $subs->{data} }, {timestamp => $mfcc_header->{length}, is_paddi
         $buf_start = $word->{timestamp};
 
         if ($matched->{success}) {
-            push @sbuf, $matched->{data};
+            push @sbuf, @{ $matched->{data} };
         }
         else {
             push @sbuf, @wbuf;
