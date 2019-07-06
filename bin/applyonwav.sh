@@ -1,14 +1,12 @@
-. /home/kruza/virtualenv/deepspeech/bin/activate
-
 infile="$1"
 
+export LD_LIBRARY_PATH=/home/kruza/local/lib
 dsasrdir=/home/kruza/dsasr
 dsdir=/home/kruza/git/DeepSpeech
-${outdir:='.'}
+: ${outdir:='.'}
 bn=`basename "$infile" | sed s/.wav//`
 outfile="$outdir/$bn.txt"
 
-if [ -e "$outfile" ]; then echo file "$outfile" exists; exit 0; fi
+#if [ -e "$outfile" ]; then echo file "$outfile" exists; exit 0; fi
 
-"$dsdir"/deepspeech "$dsasrdir"/model/output_graph.pb "$dsasrdir"/res/alphabet.txt "$dsasrdir"/data/lm/lm.binary "$dsasrdir"/data/lm/trie "$infile" > "$outfile"
-
+"/home/kruza/local/bin/deepspeech" --model "$dsasrdir"/model/output_graph.pb --alphabet "$dsasrdir"/res/alphabet.txt --lm "$dsasrdir"/data/lm/lm.binary --trie "$dsasrdir"/data/lm/trie --audio "$infile" > "$outfile"
