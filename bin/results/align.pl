@@ -22,6 +22,7 @@ die "mfcc $mfcc_fn not readable" if not -r $mfcc_fn;
 my $mfcc_header = mfcc_header($mfcc_fn);
 
 my $trans_fn = "$dsasrdir/data/recout/utf8/$stem.txt";
+$trans_fn = "/home/kruza/temp/$stem.txt";
 
 eval {
     my $db = MakonFM::Model::DB->new;
