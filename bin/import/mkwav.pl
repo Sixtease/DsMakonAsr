@@ -38,7 +38,7 @@ while (<STDIN>) {
 
     print("$in_audio_fn not found\n"), next if not -e $in_audio_fn;
     my $cmd;
-    cmd(qq(sox "$in_audio_fn" "$out_audio_fn" trim "$start" "=$end" remix - rate 16k));
+    cmd(qq(sox -V1 "$in_audio_fn" "$out_audio_fn" trim "$start" "=$end" remix - rate 16k));
 }
 
 sub cmd {

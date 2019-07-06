@@ -3,7 +3,7 @@
 # RUN THIS FIRST:
 # . config.sh
 
-#bin/import/get_humanic_subs.pl $SUBS_MASK > data/humanic_subs.txt
+bin/import/get_humanic_subs.pl $SUBS_MASK > data/humanic_subs.txt
 bin/import/mkwav.pl "$AUDIO_DIR" data < data/humanic_subs.txt
 bin/import/mktrans.pl data temp/train-dev.csv data/wide-test.csv data/wide-corpus.txt < data/humanic_subs.txt
 awk -f bin/import/split-train-dev.awk temp/train-dev.csv
