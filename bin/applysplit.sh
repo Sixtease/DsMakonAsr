@@ -30,8 +30,8 @@ grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
     INIT { $wavdir = shift; $stem = shift }
     next unless /"from"/;
     next unless /ogg/;
-    ($from) = /\bfrom\b\D+([\d.]+)/;
-    ($to) = /\bto\b\D+([\d.]+)/;
+    ($from) = /"from"\s*:\s*([\d.]+)/;
+    ($to) = /"to"\s*:\s*([\d.]+)/;
     ($bn) = /"basename"\s*:\s*"([^"]+)/;
     $bn =~ s/\.ogg/.wav/;
     $outfn = "$wavdir/$bn";
