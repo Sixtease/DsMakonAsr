@@ -14,7 +14,7 @@ stem="$1"
 #splitmetadir=
 
 
-if [ -e "$recoutdir/$stem.txt" ]; then echo file $stem exists >&2; exit 0; fi
+if ls "$recoutdir/$stem"*.txt > /dev/null 2>&1; then echo file $stem exists >&2; exit 0; fi
 
 if [ -e "$wavdir/$stem.wav" ]; then :
 elif [ -e "$flacdir/$stem.flac" ]; then
@@ -44,7 +44,7 @@ grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
         --lm "$dsasrdir"/data/lm/lm.binary \
         --trie "$dsasrdir"/data/lm/trie \
         --audio "$s" \
-        > "$s.txt"
+        > "$recoutdir/$s.txt"
     rm "$s"
 done
 
