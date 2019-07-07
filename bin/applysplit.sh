@@ -37,7 +37,7 @@ grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
     $outfn = "$wavdir/$bn";
     `sox "$wavdir/stem.wav" "$wavdir/$bn" trim $from =$to`;
     say $outfn;
-' | while read s; do
+' "$wavdir" | while read s; do
     "$dsbin" \
         --model "$dsasrdir"/model/output_graph.pb \
         --alphabet "$dsasrdir"/res/alphabet.txt \
