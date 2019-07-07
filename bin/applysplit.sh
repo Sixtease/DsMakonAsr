@@ -20,7 +20,7 @@ if [ -e "$wavdir/$stem.wav" ]; then :
 elif [ -e "$flacdir/$stem.flac" ]; then
     sox "$flacdir/$stem.flac" --channels 1 "$wavdir/$stem.wav" remix - rate -v 16k
 elif [ -e "$mp3dir/$stem.mp3" ]; then
-    sox "$flacdir/$stem.mp3" --channels 1 "$wavdir/$stem.wav" remix - rate -v 16k
+    sox "$mp3dir/$stem.mp3" --channels 1 "$wavdir/$stem.wav" remix - rate -v 16k
 else
     echo no source for $stem
     exit 1
