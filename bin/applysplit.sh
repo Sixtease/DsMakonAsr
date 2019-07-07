@@ -44,7 +44,7 @@ grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
         --lm "$dsasrdir"/data/lm/lm.binary \
         --trie "$dsasrdir"/data/lm/trie \
         --audio "$s" \
-        > "$recoutdir/$s.txt"
+        > "$recoutdir/`basename $s`.txt"
     rm "$s"
 done
 
