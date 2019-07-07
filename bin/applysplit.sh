@@ -27,7 +27,7 @@ else
 fi
 
 grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
-    INIT { $wavdir = shift }
+    INIT { $wavdir = shift; $stem = shift }
     next unless /"from"/;
     next unless /ogg/;
     ($from) = /\bfrom\b\D+([\d.]+)/;
@@ -35,9 +35,9 @@ grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
     ($bn) = /"basename"\s*:\s*"([^"]+)/;
     $bn =~ s/\.ogg/.wav/;
     $outfn = "$wavdir/$bn";
-    `sox "$wavdir/stem.wav" "$wavdir/$bn" trim $from =$to`;
+    `sox "$wavdir/$stem.wav" "$wavdir/$bn" trim $from =$to`;
     say $outfn;
-' "$wavdir" | while read s; do
+' "$wavdir" "$stem" | while read s; do
     "$dsbin" \
         --model "$dsasrdir"/model/output_graph.pb \
         --alphabet "$dsasrdir"/res/alphabet.txt \
