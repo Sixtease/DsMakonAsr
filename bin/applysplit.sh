@@ -1,14 +1,18 @@
 . ~/virtualenv/ds3/bin/activate
+. /home/kruza/dsasr/config_local.sh
 export LD_LIBRARY_PATH=/home/kruza/local/lib
 
 stem="$1"
 
-wavdir=/net/cluster/TMP/kruza/wav
-flacdir=/net/data/makon/flac
-mp3dir=/net/data/makon/mp3
-dsasrdir=/home/kruza/dsasr
-dsdir=/home/kruza/local/bin
-recoutdir="$dsasrdir/data/results/recout/ascii"
+# set from env
+#wavdir=
+#flacdir=
+#mp3dir=
+#dsasrdir=
+#dsbin=
+#recoutdir=
+#splitmetadir=
+
 
 if [ -e "$recoutdir/$stem.txt" ]; then echo file $stem exists >&2; exit 0; fi
 
@@ -22,18 +26,26 @@ else
     exit 1
 fi
 
-sox "$wavdir/$stem.wav" "$wavdir/splits-$stem.wav" trim 0 1000 : newfile : restart
-
-for s in "$wavdir/splits-$stem"*.wav; do
-    "$dsdir"/deepspeech \
+grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
+    INIT { $wavdir = shift }
+    next unless /"from"/;
+    next unless /ogg/;
+    ($from) = /\bfrom\b\D+([\d.]+)/;
+    ($to) = /\bto\b\D+([\d.]+)/;
+    ($bn) = /"basename"\s*:\s*"([^"]+)/;
+    $bn =~ s/\.ogg/.wav/;
+    $outfn = "$wavdir/$bn";
+    `sox "$wavdir/stem.wav" "$wavdir/$bn" trim $from =$to`;
+    say $outfn;
+' | while read s; do
+    "$dsbin" \
         --model "$dsasrdir"/model/output_graph.pb \
         --alphabet "$dsasrdir"/res/alphabet.txt \
-        --lm "$dsasrdir"/data/lm/makon-tg.binary \
-        --trie "$dsasrdir"/data/lm/makon.trie \
+        --lm "$dsasrdir"/data/lm/lm.binary \
+        --trie "$dsasrdir"/data/lm/trie \
         --audio "$s" \
         > "$s.txt"
     rm "$s"
 done
 
-cat "$wavdir/splits-$stem"*.wav.txt > "$recoutdir/$stem.txt"
 rm "$wavdir/$stem.wav"
