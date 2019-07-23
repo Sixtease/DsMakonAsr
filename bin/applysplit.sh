@@ -38,13 +38,14 @@ grep '"from"' "$splitmetadir/$stem.jsonp" | perl -nE '
     `sox "$wavdir/$stem.wav" "$wavdir/$bn" trim $from =$to`;
     say $outfn;
 ' "$wavdir" "$stem" | while read s; do
+    outfn="$recoutdir/$(basename $s).txt"
     "$dsbin" \
         --model "$dsasrdir"/model/output_graph.pb \
         --alphabet "$dsasrdir"/res/alphabet.txt \
         --lm "$dsasrdir"/data/lm/lm.binary \
         --trie "$dsasrdir"/data/lm/trie \
         --audio "$s" \
-        > "$recoutdir/`basename $s`.txt"
+        > "$outfn"
     rm "$s"
 done
 
