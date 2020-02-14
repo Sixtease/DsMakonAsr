@@ -6,23 +6,19 @@ use warnings;
 use utf8;
 use lib 'lib';
 use lib "$ENV{EDHome}/lib";
-use HTKUtil::MfccLib qw(mfcc_header);
 use MakonFM;
 use MakonFM::Util::Vyslov;
 use MakonFM::Model::DB;
 use MakonFM::Util::MatchChunk;
 use File::Basename qw(dirname);
+use Data::Dumper;
 
 my $dsasrdir = (sub { dirname((caller)[1]) }->()) . '/../..';
 
-my ($stem) = @ARGV;
+my ($stem, $trans_fn, $from, $to) = @ARGV;
 my $mfccdir = $ENV{MFCC_DIR} or die 'set env MFCC_DIR';
 my $mfcc_fn = "$mfccdir/$stem.mfcc";
 die "mfcc $mfcc_fn not readable" if not -r $mfcc_fn;
-my $mfcc_header = mfcc_header($mfcc_fn);
-
-my $trans_fn = "$dsasrdir/data/recout/utf8/$stem.txt";
-$trans_fn = "/home/kruza/temp/$stem.txt";
 
 eval {
     my $db = MakonFM::Model::DB->new;
@@ -30,13 +26,11 @@ eval {
 };
 
 my $matched = MakonFM::Util::MatchChunk::get_subs(
-    $trans_fn, $mfcc_fn, 0, $mfcc_header->{length},
+    $trans_fn, $mfcc_fn, $from, $to,
 );
 
 if ($matched->{success}) {
     print(
-        qq|jsonp_subtitles({ "filestem": "$stem", "data":|,
-        JSON::XS->new->pretty->encode($matched->{data}),
-        "});\n",
+        join ",\n", map JSON::XS->new->pretty->encode($_), @{ $matched->{data} }
     );
 }
