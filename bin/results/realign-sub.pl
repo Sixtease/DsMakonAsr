@@ -43,7 +43,7 @@ eval {
     MakonFM::Util::Vyslov::set_dict($db->resultset('Dict'));
 };
 
-my $buf_start = 0;
+my $buf_start = $subs->{data}[0]{timestamp};
 my @wbuf;
 my @sbuf;
 my $last_timestamp = 0;
