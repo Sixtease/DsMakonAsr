@@ -48,6 +48,7 @@ my @wbuf;
 my @sbuf;
 my $last_timestamp = 0;
 for my $word (@{ $subs->{data} }, {timestamp => $mfcc_header->{length}, is_padding => 1}) {
+    delete $word->{sstart};
     if ($word->{timestamp} < $last_timestamp) {
         die "decreasing timestamp, quitting $stem";
     }
